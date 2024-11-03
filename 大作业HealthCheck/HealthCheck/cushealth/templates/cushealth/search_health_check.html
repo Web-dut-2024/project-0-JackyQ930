@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查询体检记录</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'cushealth/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>查询体检记录</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="uId">请输入身份证：</label>
+            <input type="text" id="uId" name="uId" required>
+            <button type="submit">查询</button>
+        </form>
+
+        {% if results %}
+            <h2>查询结果：</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>身份证</th>
+                        <th>性别</th>
+                        <th>健康状态</th>
+                        <th>内容</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for customer in results %}
+                        <tr>
+                            <td>{{ customer.name }}</td>
+                            <td>{{ customer.uId }}</td>
+                            <td>{{ customer.sex }}</td>
+                            <td>{{ customer.get_health_status_display }}</td>
+                            <td>{{ customer.content }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% elif results is not none %}
+            <p>未找到相关记录。</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加体检记录</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'cushealth/css/style.css' %}">
+    <script>
+        function validateForm(event) {
+            // 获取表单字段
+            var name = document.getElementById("id_name").value;
+            var uId = document.getElementById("id_uId").value;
+            var sex = document.getElementById("id_sex").value;
+            var healthStatus = document.getElementById("id_health_status").value;
+            var content = document.getElementById("id_content").value;
+
+            // 检查是否为空
+            if (!name || !uId || !sex || !healthStatus || !content) {
+                alert("所有字段都是必填的，请填写完整信息。");
+                event.preventDefault(); // 阻止表单提交
+            } else if (content.length > 150) {
+                alert("内容不能超过150个字。");
+                event.preventDefault(); // 阻止表单提交
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>添加体检记录</h1>
+        <form method="post" onsubmit="validateForm(event)">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">提交</button>
+        </form>
+    </div>
+</body>
+</html>

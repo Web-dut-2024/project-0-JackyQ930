@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体检结果记录</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'cushealth/css/style.css' %}">  <!-- 引入CSS -->
+    <script>
+        function confirmDelete(event) {
+            if (!confirm("您确定要删除此记录吗？")) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>体检结果记录</h1>
+        <a href="{% url 'add_health_check' %}" class="button">添加记录</a>
+        <a href="{% url 'search_health_check' %}">查询记录</a>
+        <table>
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>身份证</th>
+                    <th>性别</th>
+                    <th>健康状态</th>
+                    <th>内容</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                    <tr>
+                        <td>{{ customer.name }}</td>
+                        <td>{{ customer.uId }}</td>
+                        <td>{{ customer.sex }}</td>
+                        <td>{{ customer.get_health_status_display }}</td>
+                        <td>{{ customer.content }}</td>
+                        <td>
+                            <a href="{% url 'edit_health_check' customer.pk %}">编辑</a>
+                            <a href="{% url 'delete_health_check' customer.pk %}" onclick="confirmDelete(event)">删除</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
